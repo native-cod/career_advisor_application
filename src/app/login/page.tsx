@@ -2,10 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  signInWithPopup,
-  GoogleAuthProvider,
-} from 'firebase/auth';
+// import {
+//   signInWithPopup,
+//   GoogleAuthProvider,
+// } from 'firebase/auth';
+import { signInWithEmailAndPassword,
+         createUserWithEmailAndPassword
+ } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
@@ -48,6 +51,11 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 export default function LoginPage() {
+
+  const [isSignup, setIsSignup] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
@@ -64,39 +72,66 @@ export default function LoginPage() {
     }
   }, [user, authLoading, router]);
 
-  async function handleGoogleSignIn() {
-    setLoading(true);
-    const provider = new GoogleAuthProvider();
-    try {
-      await signInWithPopup(auth, provider);
-      // Redirect logic is handled by useEffect hook above
-      toast({
-        title: 'Welcome!',
-        description: 'Successfully signed in with Google.',
-      });
-    } catch (error: any) {
-      let errorMessage = 'An error occurred during Google sign in.';
-      
-      switch (error.code) {
-        case 'auth/popup-closed-by-user':
-          errorMessage = 'Sign in was cancelled.';
-          break;
-        case 'auth/popup-blocked':
-          errorMessage = 'Pop-up was blocked. Please enable pop-ups and try again.';
-          break;
-        default:
-          errorMessage = error.message;
-      }
-      
-      toast({
-        variant: 'destructive',
-        title: 'Google Sign-In Failed',
-        description: errorMessage,
-      });
-    } finally {
-      setLoading(false);
+async function handleAuth() {
+  setLoading(true);
+
+  try {
+    if (isSignup) {
+      await createUserWithEmailAndPassword(auth, email, password);
+    } else {
+      await signInWithEmailAndPassword(auth, email, password);
     }
+
+    toast({
+      title: 'Success',
+      description: isSignup
+        ? 'Account created successfully.'
+        : 'Logged in successfully.',
+    });
+  } catch (error: any) {
+    toast({
+      variant: 'destructive',
+      title: 'Auth Failed',
+      description: error.message,
+    });
+  } finally {
+    setLoading(false);
   }
+}
+
+  // async function handleGoogleSignIn() {
+  //   setLoading(true);
+  //   const provider = new GoogleAuthProvider();
+  //   try {
+  //     await signInWithPopup(auth, provider);
+  //     // Redirect logic is handled by useEffect hook above
+  //     toast({
+  //       title: 'Welcome!',
+  //       description: 'Successfully signed in with Google.',
+  //     });
+  //   } catch (error: any) {
+  //     let errorMessage = 'An error occurred during Google sign in.';
+      
+  //     switch (error.code) {
+  //       case 'auth/popup-closed-by-user':
+  //         errorMessage = 'Sign in was cancelled.';
+  //         break;
+  //       case 'auth/popup-blocked':
+  //         errorMessage = 'Pop-up was blocked. Please enable pop-ups and try again.';
+  //         break;
+  //       default:
+  //         errorMessage = error.message;
+  //     }
+      
+  //     toast({
+  //       variant: 'destructive',
+  //       title: 'Google Sign-In Failed',
+  //       description: errorMessage,
+  //     });
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
 
   // Show loading while checking auth state
   if (authLoading) {
@@ -140,19 +175,44 @@ export default function LoginPage() {
         <CardDescription>Sign in to begin your personalized career journey.</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
-        <Button 
-        className="w-full bg-black" 
-        onClick={handleGoogleSignIn} 
-        disabled={loading}
-        size="lg"
-        >
-        {loading ? (
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <GoogleIcon className="mr-2" />
-        )}
-        Continue with Google
-        </Button>
+      <div className="grid gap-2">
+  <input
+    className="border p-2 rounded"
+    placeholder="Email"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+  />
+
+  <input
+
+    className="border p-2 rounded"
+    type="password"
+    placeholder="Password"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+  />
+
+  <Button
+    className="w-full bg-black"
+    onClick={handleAuth}
+    disabled={loading}
+    size="lg"
+  >
+    {loading ? (
+      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+    ) : (
+      'Login'
+    )}
+  </Button>
+  <button
+  className="text-sm text-blue-500"
+  onClick={() => setIsSignup(!isSignup)}
+>
+  {isSignup
+    ? 'Already have an account? Login'
+    : "Don't have an account? Sign up"}
+</button>
+</div>
       </CardContent>
       </Card>
     </main>
