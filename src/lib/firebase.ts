@@ -18,3 +18,5 @@ const app = initializeApp(firebaseConfig);
 // Initialize and export Firebase services
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+// console.log('PROJECT ID:', process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID);
+// console.log('AUTH DOMAIN:', process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN);
