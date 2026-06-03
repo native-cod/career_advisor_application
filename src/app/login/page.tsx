@@ -165,13 +165,13 @@ async function handleAuth() {
         className="h-14 w-14"
       />
       <div className='flex flex-col'>
-        <span className='text-white'>Lucas</span>
+        <span className='text-white'>Mackojey</span>
         <p className='text-sm text-muted-foreground'>Personalized Career & Skills Advisor</p>
       </div>
       </div>
       <Card className="w-full max-w-sm shadow-2xl">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl">Welcome to Lucas</CardTitle>
+        <CardTitle className="text-2xl">Welcome to Mackojey</CardTitle>
         <CardDescription>Sign in to begin your personalized career journey.</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">

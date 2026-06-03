@@ -146,7 +146,7 @@ export default function OnboardingFlow() {
             height={32} 
             className="w-8 h-8"
           />
-          Welcome to Lucas AI!
+          Welcome to Macjoey AI!
         </CardTitle>
         <CardDescription className="text-lg">
           Let's set up your personalized learning journey

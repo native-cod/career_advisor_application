@@ -51,7 +51,7 @@ export default function PersonalizedGoals({ user }: PersonalizedGoalsProps) {
           Use our AI to generate personalized weekly goals based on your career path and experience level.
         </AlertDescription>
       </Alert>
-      
+
       <div className="text-center">
         <Button onClick={handleGenerateGoals} disabled={isPending}>
           {isPending ? (
