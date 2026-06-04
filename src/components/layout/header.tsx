@@ -62,7 +62,7 @@ export function Header() {
               height={28} 
               className="h-7 w-7"
             />
-            <span className="text-xl font-bold">Macjoey</span>
+            <span className="text-xl font-bold">My career</span>
           </Link>
           
           {user && (
