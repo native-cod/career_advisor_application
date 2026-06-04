@@ -238,7 +238,8 @@ function DashboardContent() {
                 <div className="flex items-center gap-3 mb-3">
                   <UserIcon className="w-6 h-6 text-blue-600" />
                   <h2 className="text-xl font-semibold text-blue-800">
-                    Welcome to Your Dashboard, {userData.name}!
+                    {/* Welcome to Your Dashboard, {userData.name}! */}
+                    Welcome to Your Dashboard!
                   </h2>
                 </div>
                 <p className="text-blue-700 mb-4">
