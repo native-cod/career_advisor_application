@@ -359,7 +359,16 @@ export default function CareerAdvisorChat() {
       };
 
       // Get AI response
-      const result = await getCareerAdvice(aiInput);
+      // const result = await getCareerAdvice(aiInput);
+      const response = await fetch('/api/career-advice', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(aiInput)
+      });
+      
+      const result = await response.json();
 
       if (result.success && result.data) {
         const assistantMessage: ChatMessage = {
