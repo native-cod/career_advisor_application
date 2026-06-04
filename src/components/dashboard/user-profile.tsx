@@ -17,7 +17,7 @@ export default function UserProfile({ user }: UserProfileProps) {
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <CardTitle className="text-2xl">{user.name}</CardTitle>
+        <CardTitle className="text-2xl">My career</CardTitle>
         <CardDescription>{user.career}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
