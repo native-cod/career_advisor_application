@@ -53,7 +53,7 @@ export const generateCareerAdvice = ai.defineFlow(
         chatHistory.slice(-6).map((msg: { role: string; content: string }) => `${msg.role}: ${msg.content}`).join('\n');
     }
     
-    const prompt = `You are Lucas AI, an expert career advisor helping users advance their careers in technology. 
+    const prompt = `You are Macjoey AI, an expert career advisor helping users advance their careers in technology. 
     
 User Information:
 ${userContext}

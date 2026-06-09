@@ -19,9 +19,6 @@ import {
   MessageSquare,
   Loader2,
   Sparkles,
-  History,
-  Plus,
-  Clock
 } from 'lucide-react';
 import { getCareerAdvice, saveChatMessage, getChatSessions, getChatMessages } from '@/app/actions';
 import type { CareerAdviceInput } from '@/ai/flows/generate-career-advice';
@@ -60,10 +57,6 @@ export default function CareerAdvisorChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  // const [sessionId, setSessionId] = useState<string>('');
-  // const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
-  // const [loadingSessions, setLoadingSessions] = useState(true);
-  // const [showHistory, setShowHistory] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -334,22 +327,6 @@ export default function CareerAdvisorChat() {
     setIsLoading(true);
 
     try {
-      // Save user message to Firestore
-      // const saveResult = await saveChatMessage({
-      //   userId: user.uid,
-      //   message: question,
-      //   role: 'user',
-      //   sessionId: sessionId || undefined
-      // });
-
-      // const saveResult = {
-      //   success: true,
-      //   sessionId: 'test-session'
-      // };
-
-      // if (!sessionId && saveResult.success) {
-      //   setSessionId(saveResult.sessionId);
-      // }
 
       // Prepare input for AI
       const aiInput: CareerAdviceInput = {
@@ -363,52 +340,6 @@ export default function CareerAdvisorChat() {
         }))
       };
 
-      // Get AI response
-// const result = await getCareerAdvice(aiInput);
-      // const response = await fetch('/api/career-advice', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify(aiInput)
-      // });
-      // console.log('Response status:', response.status);
-      // const result = await response.json();
-
-      // if (result.success && result.data) {
-      //   const assistantMessage: ChatMessage = {
-      //     id: `assistant-${Date.now()}`,
-      //     role: 'assistant',
-      //     content: result.data.advice,
-      //     timestamp: new Date(),
-      //     suggestedSkills: result.data.suggestedSkills,
-      //     actionItems: result.data.actionItems,
-      //     resources: result.data.resources
-      //   };
-
-      //   setMessages(prev => {
-      //     const newMessages = [...prev, assistantMessage];
-      //     // Save to localStorage after updating state
-      //     // saveToLocalStorage(newMessages, saveResult.sessionId);
-      //     return newMessages;
-      //   });
-
-      //   // Save assistant message to Firestore
-      //   // await saveChatMessage({
-      //   //   userId: user.uid,
-      //   //   message: result.data.advice,
-      //   //   role: 'assistant',
-      //   //   sessionId: saveResult.sessionId
-      //   // });
-
-      //   // Refresh sessions list to show updated last message time
-      //   // loadChatSessions();
-      // } else {
-      //   throw new Error(result.message || 'Failed to get career advice');
-      // }
-
-
- //////
  const response = await fetch('/api/career-advice', {
   method: 'POST',
   headers: {
