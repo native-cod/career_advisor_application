@@ -36,13 +36,13 @@ interface ChatMessage {
   resources?: Array<{title: string, url: string, type: string}>;
 }
 
-interface ChatSession {
-  id: string;
-  userId: string;
-  createdAt: Date;
-  lastMessageAt: Date;
-  messageCount: number;
-}
+// interface ChatSession {
+//   id: string;
+//   userId: string;
+//   createdAt: Date;
+//   lastMessageAt: Date;
+//   messageCount: number;
+// }
 
 const QUICK_QUESTIONS = [
   "Help me find a job",
@@ -60,10 +60,10 @@ export default function CareerAdvisorChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [sessionId, setSessionId] = useState<string>('');
-  const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
-  const [loadingSessions, setLoadingSessions] = useState(true);
-  const [showHistory, setShowHistory] = useState(false);
+  // const [sessionId, setSessionId] = useState<string>('');
+  // const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
+  // const [loadingSessions, setLoadingSessions] = useState(true);
+  // const [showHistory, setShowHistory] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -75,237 +75,237 @@ export default function CareerAdvisorChat() {
   }, [messages]);
 
   // Focus input on mount
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
+  // useEffect(() => {
+  //   inputRef.current?.focus();
+  // }, []);
 
   // Load chat sessions on component mount and when history is shown
-  useEffect(() => {
-    if (user?.uid) {
-      loadChatSessions();
-    }
-  }, [user?.uid]);
+  // useEffect(() => {
+  //   if (user?.uid) {
+  //     loadChatSessions();
+  //   }
+  // }, [user?.uid]);
 
-  useEffect(() => {
-    if (user?.uid && showHistory) {
-      loadChatSessions();
-    }
-  }, [user?.uid, showHistory]);
+  // useEffect(() => {
+  //   if (user?.uid && showHistory) {
+  //     loadChatSessions();
+  //   }
+  // }, [user?.uid, showHistory]);
 
-  const saveToLocalStorage = (messages: ChatMessage[], sessionId: string) => {
-    if (typeof window !== 'undefined' && user) {
-      console.log('Saving to localStorage:', { sessionId, messageCount: messages.length });
+  // const saveToLocalStorage = (messages: ChatMessage[], sessionId: string) => {
+  //   if (typeof window !== 'undefined' && user) {
+  //     console.log('Saving to localStorage:', { sessionId, messageCount: messages.length });
       
-      // Save messages to localStorage
-      const messagesToSave = messages.map(msg => ({
-        id: msg.id,
-        message: msg.content,
-        role: msg.role,
-        sessionId: sessionId,
-        timestamp: msg.timestamp instanceof Date ? msg.timestamp.toISOString() : msg.timestamp,
-        suggestedSkills: msg.suggestedSkills,
-        actionItems: msg.actionItems,
-        resources: msg.resources
-      }));
-      localStorage.setItem(`chat_messages_${user.uid}_${sessionId}`, JSON.stringify(messagesToSave));
+  //     // Save messages to localStorage
+  //     const messagesToSave = messages.map(msg => ({
+  //       id: msg.id,
+  //       message: msg.content,
+  //       role: msg.role,
+  //       sessionId: sessionId,
+  //       timestamp: msg.timestamp instanceof Date ? msg.timestamp.toISOString() : msg.timestamp,
+  //       suggestedSkills: msg.suggestedSkills,
+  //       actionItems: msg.actionItems,
+  //       resources: msg.resources
+  //     }));
+  //     localStorage.setItem(`chat_messages_${user.uid}_${sessionId}`, JSON.stringify(messagesToSave));
       
-      // Save session info
-      const sessions = JSON.parse(localStorage.getItem(`chat_sessions_${user.uid}`) || '[]');
-      const existingSessionIndex = sessions.findIndex((s: any) => s.sessionId === sessionId);
+  //     // Save session info
+  //     const sessions = JSON.parse(localStorage.getItem(`chat_sessions_${user.uid}`) || '[]');
+  //     const existingSessionIndex = sessions.findIndex((s: any) => s.sessionId === sessionId);
       
-      const sessionData = {
-        id: sessionId,
-        sessionId: sessionId,
-        userId: user.uid,
-        createdAt: existingSessionIndex >= 0 ? sessions[existingSessionIndex].createdAt : new Date().toISOString(),
-        lastMessageAt: new Date().toISOString(),
-        messageCount: messages.length,
-        lastMessage: messages[messages.length - 1]?.content?.substring(0, 100) || 'No preview'
-      };
+  //     const sessionData = {
+  //       id: sessionId,
+  //       sessionId: sessionId,
+  //       userId: user.uid,
+  //       createdAt: existingSessionIndex >= 0 ? sessions[existingSessionIndex].createdAt : new Date().toISOString(),
+  //       lastMessageAt: new Date().toISOString(),
+  //       messageCount: messages.length,
+  //       lastMessage: messages[messages.length - 1]?.content?.substring(0, 100) || 'No preview'
+  //     };
       
-      if (existingSessionIndex >= 0) {
-        sessions[existingSessionIndex] = sessionData;
-      } else {
-        sessions.unshift(sessionData);
-      }
+  //     if (existingSessionIndex >= 0) {
+  //       sessions[existingSessionIndex] = sessionData;
+  //     } else {
+  //       sessions.unshift(sessionData);
+  //     }
       
-      localStorage.setItem(`chat_sessions_${user.uid}`, JSON.stringify(sessions));
-      console.log('Updated localStorage sessions:', sessions.length);
+  //     localStorage.setItem(`chat_sessions_${user.uid}`, JSON.stringify(sessions));
+  //     console.log('Updated localStorage sessions:', sessions.length);
       
-      // Immediately update the UI
-      setChatSessions(sessions);
-    }
-  };
+  //     // Immediately update the UI
+  //     setChatSessions(sessions);
+  //   }
+  // };
 
-  const loadChatSessions = async () => {
-    if (!user?.uid) {
-      console.log('No user UID available for loading chat sessions');
-      return;
-    }
+  // const loadChatSessions = async () => {
+  //   if (!user?.uid) {
+  //     console.log('No user UID available for loading chat sessions');
+  //     return;
+  //   }
     
-    console.log('Loading chat sessions for user:', user.uid);
-    setLoadingSessions(true);
+  //   console.log('Loading chat sessions for user:', user.uid);
+  //   setLoadingSessions(true);
     
-    // Always load from localStorage first to show immediate results
-    const localSessions = typeof window !== 'undefined' ? 
-      JSON.parse(localStorage.getItem(`chat_sessions_${user.uid}`) || '[]') : [];
+  //   // Always load from localStorage first to show immediate results
+  //   const localSessions = typeof window !== 'undefined' ? 
+  //     JSON.parse(localStorage.getItem(`chat_sessions_${user.uid}`) || '[]') : [];
     
-    console.log('Local sessions found:', localSessions.length);
+  //   console.log('Local sessions found:', localSessions.length);
     
-    if (localSessions.length > 0) {
-      // Ensure dates are properly formatted for local sessions
-      const formattedLocalSessions = localSessions.map((session: any) => ({
-        ...session,
-        createdAt: typeof session.createdAt === 'string' ? session.createdAt : new Date(session.createdAt).toISOString(),
-        lastMessageAt: typeof session.lastMessageAt === 'string' ? session.lastMessageAt : new Date(session.lastMessageAt).toISOString()
-      }));
-      setChatSessions(formattedLocalSessions);
-      console.log('Loaded local chat sessions:', formattedLocalSessions.length);
-    }
+  //   if (localSessions.length > 0) {
+  //     // Ensure dates are properly formatted for local sessions
+  //     const formattedLocalSessions = localSessions.map((session: any) => ({
+  //       ...session,
+  //       createdAt: typeof session.createdAt === 'string' ? session.createdAt : new Date(session.createdAt).toISOString(),
+  //       lastMessageAt: typeof session.lastMessageAt === 'string' ? session.lastMessageAt : new Date(session.lastMessageAt).toISOString()
+  //     }));
+  //     setChatSessions(formattedLocalSessions);
+  //     console.log('Loaded local chat sessions:', formattedLocalSessions.length);
+  //   }
     
-    try {
-      const result = await getChatSessions(user.uid);
-      console.log('getChatSessions result:', result);
-      if (result.success && result.sessions.length > 0) {
-        setChatSessions(result.sessions);
-        console.log('Loaded remote chat sessions:', result.sessions.length);
-      } else if (localSessions.length === 0) {
-        console.log('No sessions found locally or remotely');
-        setChatSessions([]);
-      }
-    } catch (error) {
-      console.error('Error loading chat sessions:', error);
-      // Keep local sessions if remote fails
-      if (localSessions.length === 0) {
-        toast({
-          title: "Notice",
-          description: "Using offline chat history",
-          variant: "default",
-        });
-      }
-    } finally {
-      setLoadingSessions(false);
-    }
-  };
+  //   try {
+  //     const result = await getChatSessions(user.uid);
+  //     console.log('getChatSessions result:', result);
+  //     if (result.success && result.sessions.length > 0) {
+  //       setChatSessions(result.sessions);
+  //       console.log('Loaded remote chat sessions:', result.sessions.length);
+  //     } else if (localSessions.length === 0) {
+  //       console.log('No sessions found locally or remotely');
+  //       setChatSessions([]);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error loading chat sessions:', error);
+  //     // Keep local sessions if remote fails
+  //     if (localSessions.length === 0) {
+  //       toast({
+  //         title: "Notice",
+  //         description: "Using offline chat history",
+  //         variant: "default",
+  //       });
+  //     }
+  //   } finally {
+  //     setLoadingSessions(false);
+  //   }
+  // };
 
-  const loadChatMessages = async (selectedSessionId: string) => {
-    if (!user) return;
+  // const loadChatMessages = async (selectedSessionId: string) => {
+  //   if (!user) return;
     
-    console.log('Loading chat messages for session:', selectedSessionId);
-    setIsLoading(true);
+  //   console.log('Loading chat messages for session:', selectedSessionId);
+  //   setIsLoading(true);
     
-    // Load from localStorage first
-    const localMessages = typeof window !== 'undefined' ? 
-      JSON.parse(localStorage.getItem(`chat_messages_${user.uid}_${selectedSessionId}`) || '[]') : [];
+  //   // Load from localStorage first
+  //   const localMessages = typeof window !== 'undefined' ? 
+  //     JSON.parse(localStorage.getItem(`chat_messages_${user.uid}_${selectedSessionId}`) || '[]') : [];
     
-    console.log('Local messages found:', localMessages.length);
+  //   console.log('Local messages found:', localMessages.length);
     
-    try {
-      const result = await getChatMessages(user.uid, selectedSessionId);
-      if (result.success && result.messages.length > 0) {
-        const formattedMessages = result.messages.map(msg => ({
-          id: msg.id,
-          role: msg.role,
-          content: msg.message,
-          timestamp: msg.timestamp,
-          suggestedSkills: msg.suggestedSkills,
-          actionItems: msg.actionItems,
-          resources: msg.resources
-        }));
-        setMessages(formattedMessages);
-        setSessionId(selectedSessionId);
-        setShowHistory(false);
-        console.log('Loaded remote messages:', formattedMessages.length);
-      } else if (localMessages.length > 0) {
-        // Use localStorage messages
-        const formattedMessages = localMessages.map((msg: any) => ({
-          id: msg.id,
-          role: msg.role,
-          content: msg.message,
-          timestamp: new Date(msg.timestamp),
-          suggestedSkills: msg.suggestedSkills,
-          actionItems: msg.actionItems,
-          resources: msg.resources
-        }));
-        setMessages(formattedMessages);
-        setSessionId(selectedSessionId);
-        setShowHistory(false);
-        console.log('Loaded local messages:', formattedMessages.length);
-      }
-    } catch (error) {
-      console.error('Error loading chat messages:', error);
-      // Use localStorage as fallback
-      if (localMessages.length > 0) {
-        const formattedMessages = localMessages.map((msg: any) => ({
-          id: msg.id,
-          role: msg.role,
-          content: msg.message,
-          timestamp: new Date(msg.timestamp),
-          suggestedSkills: msg.suggestedSkills,
-          actionItems: msg.actionItems,
-          resources: msg.resources
-        }));
-        setMessages(formattedMessages);
-        setSessionId(selectedSessionId);
-        setShowHistory(false);
-        console.log('Used local messages as fallback:', formattedMessages.length);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //   try {
+  //     const result = await getChatMessages(user.uid, selectedSessionId);
+  //     if (result.success && result.messages.length > 0) {
+  //       const formattedMessages = result.messages.map(msg => ({
+  //         id: msg.id,
+  //         role: msg.role,
+  //         content: msg.message,
+  //         timestamp: msg.timestamp,
+  //         suggestedSkills: msg.suggestedSkills,
+  //         actionItems: msg.actionItems,
+  //         resources: msg.resources
+  //       }));
+  //       setMessages(formattedMessages);
+  //       setSessionId(selectedSessionId);
+  //       setShowHistory(false);
+  //       console.log('Loaded remote messages:', formattedMessages.length);
+  //     } else if (localMessages.length > 0) {
+  //       // Use localStorage messages
+  //       const formattedMessages = localMessages.map((msg: any) => ({
+  //         id: msg.id,
+  //         role: msg.role,
+  //         content: msg.message,
+  //         timestamp: new Date(msg.timestamp),
+  //         suggestedSkills: msg.suggestedSkills,
+  //         actionItems: msg.actionItems,
+  //         resources: msg.resources
+  //       }));
+  //       setMessages(formattedMessages);
+  //       setSessionId(selectedSessionId);
+  //       setShowHistory(false);
+  //       console.log('Loaded local messages:', formattedMessages.length);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error loading chat messages:', error);
+  //     // Use localStorage as fallback
+  //     if (localMessages.length > 0) {
+  //       const formattedMessages = localMessages.map((msg: any) => ({
+  //         id: msg.id,
+  //         role: msg.role,
+  //         content: msg.message,
+  //         timestamp: new Date(msg.timestamp),
+  //         suggestedSkills: msg.suggestedSkills,
+  //         actionItems: msg.actionItems,
+  //         resources: msg.resources
+  //       }));
+  //       setMessages(formattedMessages);
+  //       setSessionId(selectedSessionId);
+  //       setShowHistory(false);
+  //       console.log('Used local messages as fallback:', formattedMessages.length);
+  //     }
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
-  const startNewChat = () => {
-    setMessages([]);
-    setSessionId('');
-    setShowHistory(false);
-    inputRef.current?.focus();
-  };
+  // const startNewChat = () => {
+  //   setMessages([]);
+  //   setSessionId('');
+  //   setShowHistory(false);
+  //   inputRef.current?.focus();
+  // };
 
-  const formatRelativeTime = (date: Date | string) => {
-    const now = new Date();
-    let targetDate: Date;
+  // const formatRelativeTime = (date: Date | string) => {
+  //   const now = new Date();
+  //   let targetDate: Date;
     
-    if (typeof date === 'string') {
-      targetDate = new Date(date);
-    } else if (date instanceof Date) {
-      targetDate = date;
-    } else {
-      return 'Unknown time';
-    }
+  //   if (typeof date === 'string') {
+  //     targetDate = new Date(date);
+  //   } else if (date instanceof Date) {
+  //     targetDate = date;
+  //   } else {
+  //     return 'Unknown time';
+  //   }
     
-    // Check if date is valid
-    if (isNaN(targetDate.getTime())) {
-      return 'Invalid date';
-    }
+  //   // Check if date is valid
+  //   if (isNaN(targetDate.getTime())) {
+  //     return 'Invalid date';
+  //   }
     
-    const diffInMinutes = Math.floor((now.getTime() - targetDate.getTime()) / (1000 * 60));
+  //   const diffInMinutes = Math.floor((now.getTime() - targetDate.getTime()) / (1000 * 60));
     
-    if (diffInMinutes < 1) return 'Just now';
-    if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
-    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
-    if (diffInMinutes < 10080) return `${Math.floor(diffInMinutes / 1440)}d ago`;
-    return targetDate.toLocaleDateString();
-  };
+  //   if (diffInMinutes < 1) return 'Just now';
+  //   if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+  //   if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
+  //   if (diffInMinutes < 10080) return `${Math.floor(diffInMinutes / 1440)}d ago`;
+  //   return targetDate.toLocaleDateString();
+  // };
 
-  const formatDate = (date: Date | string) => {
-    let targetDate: Date;
+  // const formatDate = (date: Date | string) => {
+  //   let targetDate: Date;
     
-    if (typeof date === 'string') {
-      targetDate = new Date(date);
-    } else if (date instanceof Date) {
-      targetDate = date;
-    } else {
-      return 'Unknown date';
-    }
+  //   if (typeof date === 'string') {
+  //     targetDate = new Date(date);
+  //   } else if (date instanceof Date) {
+  //     targetDate = date;
+  //   } else {
+  //     return 'Unknown date';
+  //   }
     
-    // Check if date is valid
-    if (isNaN(targetDate.getTime())) {
-      return 'Invalid date';
-    }
+  //   // Check if date is valid
+  //   if (isNaN(targetDate.getTime())) {
+  //     return 'Invalid date';
+  //   }
     
-    return targetDate.toLocaleDateString();
-  };
+  //   return targetDate.toLocaleDateString();
+  // };
 
   const handleQuickQuestion = (question: string) => {
     setInput(question);
@@ -326,8 +326,8 @@ export default function CareerAdvisorChat() {
     setMessages(prev => {
       const newMessages = [...prev, userMessage];
       // Save to localStorage after adding user message
-      const tempSessionId = sessionId || `temp_${Date.now()}`;
-      saveToLocalStorage(newMessages, tempSessionId);
+      // const tempSessionId = sessionId || `temp_${Date.now()}`;
+      // saveToLocalStorage(newMessages, tempSessionId);
       return newMessages;
     });
     setInput('');
@@ -335,16 +335,21 @@ export default function CareerAdvisorChat() {
 
     try {
       // Save user message to Firestore
-      const saveResult = await saveChatMessage({
-        userId: user.uid,
-        message: question,
-        role: 'user',
-        sessionId: sessionId || undefined
-      });
+      // const saveResult = await saveChatMessage({
+      //   userId: user.uid,
+      //   message: question,
+      //   role: 'user',
+      //   sessionId: sessionId || undefined
+      // });
 
-      if (!sessionId && saveResult.success) {
-        setSessionId(saveResult.sessionId);
-      }
+      // const saveResult = {
+      //   success: true,
+      //   sessionId: 'test-session'
+      // };
+
+      // if (!sessionId && saveResult.success) {
+      //   setSessionId(saveResult.sessionId);
+      // }
 
       // Prepare input for AI
       const aiInput: CareerAdviceInput = {
@@ -359,48 +364,83 @@ export default function CareerAdvisorChat() {
       };
 
       // Get AI response
-      // const result = await getCareerAdvice(aiInput);
-      const response = await fetch('/api/career-advice', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(aiInput)
-      });
+// const result = await getCareerAdvice(aiInput);
+      // const response = await fetch('/api/career-advice', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify(aiInput)
+      // });
+      // console.log('Response status:', response.status);
+      // const result = await response.json();
+
+      // if (result.success && result.data) {
+      //   const assistantMessage: ChatMessage = {
+      //     id: `assistant-${Date.now()}`,
+      //     role: 'assistant',
+      //     content: result.data.advice,
+      //     timestamp: new Date(),
+      //     suggestedSkills: result.data.suggestedSkills,
+      //     actionItems: result.data.actionItems,
+      //     resources: result.data.resources
+      //   };
+
+      //   setMessages(prev => {
+      //     const newMessages = [...prev, assistantMessage];
+      //     // Save to localStorage after updating state
+      //     // saveToLocalStorage(newMessages, saveResult.sessionId);
+      //     return newMessages;
+      //   });
+
+      //   // Save assistant message to Firestore
+      //   // await saveChatMessage({
+      //   //   userId: user.uid,
+      //   //   message: result.data.advice,
+      //   //   role: 'assistant',
+      //   //   sessionId: saveResult.sessionId
+      //   // });
+
+      //   // Refresh sessions list to show updated last message time
+      //   // loadChatSessions();
+      // } else {
+      //   throw new Error(result.message || 'Failed to get career advice');
+      // }
+
+
+ //////
+ const response = await fetch('/api/career-advice', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(aiInput)
+});
+
+console.log('Response status:', response.status);
+
+const result = await response.json();
+
+console.log('API Response:', result);
+
+if (result.success && result.data) {
+  const assistantMessage: ChatMessage = {
+    id: `assistant-${Date.now()}`,
+    role: 'assistant',
+    content: result.data.advice,
+    timestamp: new Date(),
+    suggestedSkills: result.data.suggestedSkills,
+    actionItems: result.data.actionItems,
+    resources: result.data.resources
+  };
+
+  setMessages(prev => [...prev, assistantMessage]);
+} else {
+  console.error('API returned:', result);
+  throw new Error(result.message || 'Failed to get career advice');
+}
       
-      const result = await response.json();
 
-      if (result.success && result.data) {
-        const assistantMessage: ChatMessage = {
-          id: `assistant-${Date.now()}`,
-          role: 'assistant',
-          content: result.data.advice,
-          timestamp: new Date(),
-          suggestedSkills: result.data.suggestedSkills,
-          actionItems: result.data.actionItems,
-          resources: result.data.resources
-        };
-
-        setMessages(prev => {
-          const newMessages = [...prev, assistantMessage];
-          // Save to localStorage after updating state
-          saveToLocalStorage(newMessages, saveResult.sessionId);
-          return newMessages;
-        });
-
-        // Save assistant message to Firestore
-        await saveChatMessage({
-          userId: user.uid,
-          message: result.data.advice,
-          role: 'assistant',
-          sessionId: saveResult.sessionId
-        });
-
-        // Refresh sessions list to show updated last message time
-        loadChatSessions();
-      } else {
-        throw new Error(result.message || 'Failed to get career advice');
-      }
     } catch (error) {
       console.error('Error getting career advice:', error);
       const errorMessage: ChatMessage = {
@@ -426,7 +466,7 @@ export default function CareerAdvisorChat() {
     <div className="container mx-auto max-w-6xl p-4 h-[calc(100vh-4rem)]">
       <div className="flex gap-4 h-full">
         {/* Chat History Sidebar */}
-        <div className={`transition-all duration-300 ${showHistory ? 'w-80' : 'w-0 overflow-hidden'}`}>
+        {/* <div className={`transition-all duration-300 ${showHistory ? 'w-80' : 'w-0 overflow-hidden'}`}>
           <Card className="h-full">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
@@ -483,7 +523,7 @@ export default function CareerAdvisorChat() {
               </ScrollArea>
             </CardContent>
           </Card>
-        </div>
+        </div> */}
 
         {/* Main Chat Area */}
         <div className="flex-1 flex flex-col">
@@ -499,7 +539,7 @@ export default function CareerAdvisorChat() {
                   <p className="text-muted-foreground">Get personalized career guidance powered by AI</p>
                 </div>
               </div>
-              <Button
+              {/* <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setShowHistory(!showHistory)}
@@ -507,7 +547,7 @@ export default function CareerAdvisorChat() {
               >
                 <History className="w-4 h-4" />
                 {showHistory ? 'Hide' : 'Show'} History
-              </Button>
+              </Button> */}
             </div>
             
             {messages.length === 0 && (
@@ -542,7 +582,8 @@ export default function CareerAdvisorChat() {
 
           {/* Chat Messages */}
           <div className="flex-1 flex flex-col min-h-0">
-          <ScrollArea className="flex-1 pr-4" ref={scrollAreaRef}>
+          {/* <ScrollArea className="flex-1 pr-4" ref={scrollAreaRef}> */}
+          <div className="flex-1 overflow-y-auto pr-4" ref={scrollAreaRef}>
             <div className="space-y-4">
               {messages.map((message) => (
                 <div
@@ -656,7 +697,8 @@ export default function CareerAdvisorChat() {
                 </div>
               )}
             </div>
-          </ScrollArea>
+            </div>
+          {/* </ScrollArea> */}
           
           {/* Input Area */}
           <div className="mt-4 border-t pt-4">
